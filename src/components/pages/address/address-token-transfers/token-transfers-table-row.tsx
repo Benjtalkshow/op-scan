@@ -65,7 +65,14 @@ const TokenTransfersTableRow = ({
       </TableCell>
       <TableCell className="max-w-40">
         <div className="flex items-center gap-2">
-          <AddressLink address={tokenTransfer.from} formatted />
+          <AddressLink
+            address={tokenTransfer.from}
+            formatted
+            href={
+              sourceAccount &&
+              `${sourceAccount.rollupConfig.l2ChainBlockExplorerUrl}/address/${tokenTransfer.from}/token-transfers`
+            }
+          />
           <CopyButton content="Copy From" copy={tokenTransfer.from} />
         </div>
       </TableCell>
@@ -86,10 +93,8 @@ const TokenTransfersTableRow = ({
             address={tokenTransfer.to}
             formatted
             href={
-              (destinationAccount &&
-                `${destinationAccount.rollupConfig.l2ChainBlockExplorerUrl}/address/${tokenTransfer.to}`) ??
-              (sourceAccount &&
-                `${sourceAccount.rollupConfig.l2ChainBlockExplorerUrl}/address/${tokenTransfer.to}`)
+              destinationAccount &&
+              `${destinationAccount.rollupConfig.l2ChainBlockExplorerUrl}/address/${tokenTransfer.to}/token-transfers`
             }
           />
           <CopyButton content="Copy To" copy={tokenTransfer.to} />

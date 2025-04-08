@@ -10,7 +10,7 @@ const VerifyContractInfo = ({
   <div className="flex w-full flex-col gap-4 lg:w-2/3">
     <p className="text-sm">
       Source code verification provides transparency for users interacting with
-      smart contracts. By uploading the source code, OP Scan will match the
+      smart contracts. By uploading the source code, SuperScan will match the
       compiled code with that on the blockchain.
     </p>
     {step === 2 && (

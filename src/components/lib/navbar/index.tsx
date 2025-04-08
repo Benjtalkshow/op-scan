@@ -14,8 +14,8 @@ const Navbar = () => (
         href="/"
         className="flex size-10 items-center gap-2 text-lg font-semibold md:text-base"
       >
-        <Image src={logoImg} alt="OP Scan logo" className="size-8" />
-        <span className="sr-only">OP Scan</span>
+        <Image src={logoImg} alt="SuperScan logo" className="size-8" />
+        <span className="sr-only">SuperScan</span>
       </Link>
       <Link
         href="/"
@@ -37,8 +37,8 @@ const Navbar = () => (
             href="/"
             className="inline-flex items-center gap-2 text-lg font-semibold"
           >
-            <Image src={logoImg} alt="OP Scan logo" className="size-8" />
-            <span className="sr-only">OP Scan</span>
+            <Image src={logoImg} alt="SuperScan logo" className="size-8" />
+            <span className="sr-only">SuperScan</span>
           </Link>
           <Link href="/" className="hover:text-foreground">
             Home
