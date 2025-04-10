@@ -1,5 +1,7 @@
 import { type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { subDays, getUnixTime } from "date-fns";
+import { UTCDate } from "@date-fns/utc";
 import {
   fetchL2BlockNumberFromJsonRpc,
   fetchL2BlockNumberFromDatabase,
@@ -59,6 +61,21 @@ export const GET = async (request: NextRequest) => {
         l1BlocksIndexed.push(Number(blockNumber));
       }
     }
+    const [{ count: deletedBlocksCount }, { count: deletedL1BlocksCount }] =
+      await Promise.all([
+        prisma.block.deleteMany({
+          where: {
+            chainId: l2Chain.id,
+            timestamp: { lt: getUnixTime(subDays(new UTCDate(), 1)) },
+          },
+        }),
+        prisma.l1Block.deleteMany({
+          where: {
+            chainId: l2Chain.id,
+            timestamp: { lt: getUnixTime(subDays(new UTCDate(), 1)) },
+          },
+        }),
+      ]);
     return Response.json({
       ok: true,
       l2BlockNumberFromJsonRpc: l2BlockNumberFromJsonRpc.toString(),
@@ -67,6 +84,8 @@ export const GET = async (request: NextRequest) => {
       l1BlockNumberFromJsonRpc: l1BlockNumberFromJsonRpc.toString(),
       l1BlockNumberFromDatabase: l1BlockNumberFromDatabase.toString(),
       l1BlocksIndexed: l1BlocksIndexed.sort(),
+      deletedBlocksCount,
+      deletedL1BlocksCount,
     });
   } catch (error) {
     console.error(error);

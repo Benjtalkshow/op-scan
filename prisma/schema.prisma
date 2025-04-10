@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  // provider = "postgresql"
+  // provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -119,7 +119,7 @@ model Account {
   transactionHash String?
   contract        String?
   chainId         Int
-  transaction     Transaction?  @relation(fields: [transactionHash, chainId], references: [hash, chainId])
+  transaction     Transaction?  @relation(fields: [transactionHash, chainId], references: [hash, chainId], onDelete: Cascade)
   erc20Token      Erc20Token?
   erc721Token     Erc721Token?
   erc1155Token    Erc1155Token?
@@ -197,8 +197,8 @@ model NftTransfer {
   erc721TokenAddress  String?
   erc1155TokenAddress String?
   chainId             Int
-  erc721Token         Erc721Token?       @relation(fields: [erc721TokenAddress, chainId], references: [address, chainId])
-  erc1155Token        Erc1155Token?      @relation(fields: [erc1155TokenAddress, chainId], references: [address, chainId])
+  erc721Token         Erc721Token?       @relation(fields: [erc721TokenAddress, chainId], references: [address, chainId], onDelete: Cascade)
+  erc1155Token        Erc1155Token?      @relation(fields: [erc1155TokenAddress, chainId], references: [address, chainId], onDelete: Cascade)
   receipt             TransactionReceipt @relation(fields: [transactionHash, chainId], references: [transactionHash, chainId], onDelete: Cascade)
   log                 Log                @relation(fields: [blockNumber, transactionIndex, logIndex, chainId], references: [blockNumber, transactionIndex, logIndex, chainId], onDelete: Cascade)
   rollupConfig        RollupConfig       @relation(fields: [chainId], references: [l2ChainId], onDelete: Cascade)
@@ -208,6 +208,7 @@ model NftTransfer {
 
 model L1Block {
   number              BigInt
+  timestamp           BigInt
   chainId             Int
   rollupConfig        RollupConfig          @relation(fields: [chainId], references: [l2ChainId], onDelete: Cascade)
   transactionEnqueued TransactionEnqueued[]

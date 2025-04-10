@@ -589,36 +589,37 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
       fromBlock: blockNumber,
       toBlock: blockNumber,
     }),
-    l1CrossDomainMessenger.getEvents.SentMessage(undefined, {
+    [],
+    [],
+    /*l1CrossDomainMessenger.getEvents.SentMessage(undefined, {
       fromBlock: blockNumber,
       toBlock: blockNumber,
     }),
     l1StandardBridge.getEvents.ETHBridgeInitiated(undefined, {
       fromBlock: blockNumber,
       toBlock: blockNumber,
-    }),
+    }),*/
   ]);
   const transactionsEnqueued = extractTransactionDepositedLogs({
     logs: transactionDepositedLogs,
   })
-    .map((transactionDepositedLog, index) => {
-      console.log(transactionDepositedLog);
-      const sentMessageLog = sentMessageLogs[index];
+    .map((transactionDepositedLog) => {
+      /* const sentMessageLog = sentMessageLogs[index];
       const gasLimit =
         sentMessageLog?.args.gasLimit ??
-        BigInt(`0x${transactionDepositedLog.args.opaqueData.slice(130, 146)}`);
+        BigInt(`0x${transactionDepositedLog.args.opaqueData.slice(130, 146)}`); */
       return {
         l1BlockNumber: transactionDepositedLog.blockNumber,
         l2TxHash: getL2TransactionHash({ log: transactionDepositedLog }),
         l1TxHash: transactionDepositedLog.transactionHash,
         timestamp,
         l1TxOrigin: getAddress(transactionDepositedLog.args.from),
-        gasLimit,
+        gasLimit: BigInt(0),
       };
     })
     .filter((transactionEnqueued) => transactionEnqueued !== null);
   // TODO: bridgeETH deposits not fully supported
-  const bridgeTransactions = ethBridgeInitiatedLogs.map(
+  /*const bridgeTransactions = ethBridgeInitiatedLogs.map(
     (ethBridgeInitiatedLog) => {
       return {
         l1BlockNumber: ethBridgeInitiatedLog.blockNumber,
@@ -630,13 +631,13 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
       };
     },
   );
-  transactionsEnqueued.push(...bridgeTransactions);
+  transactionsEnqueued.push(...bridgeTransactions); */
   try {
     await prisma.$transaction([
       prisma.l1Block.upsert({
         where: { number_chainId: { number: blockNumber, chainId } },
-        create: { number: blockNumber, chainId },
-        update: { number: blockNumber, chainId },
+        create: { number: blockNumber, timestamp, chainId },
+        update: { number: blockNumber, timestamp, chainId },
       }),
       ...transactionsEnqueued
         .map((transactionEnqueued) =>
