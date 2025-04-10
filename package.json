@@ -9,7 +9,7 @@
     "start": "next start",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "next lint",
-    "prisma:generate": "prisma generate --no-engine",
+    "prisma:generate": "prisma generate",
     "prisma:db:push": "dotenvx run -f .env.local -- prisma db push",
     "prisma:studio": "dotenvx run -f .env.local -- prisma studio",
     "op-indexer": "dotenvx run -f .env.local -- pnpm dlx tsx op-indexer/index.ts",
