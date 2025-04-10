@@ -1,4 +1,4 @@
-import { type Log, getAddress, type Address, type Hex, zeroHash } from "viem";
+import { type Log, getAddress, type Address, type Hex } from "viem";
 import {
   extractTransactionDepositedLogs,
   getL2TransactionHash,
@@ -38,8 +38,8 @@ import {
 import getErc20Contract from "@/lib/contracts/erc-20/contract";
 import getErc721Contract from "@/lib/contracts/erc-721/contract";
 import optimismPortal from "@/lib/contracts/optimism-portal2/contract";
-import l1CrossDomainMessenger from "@/lib/contracts/l1-cross-domain-messenger/contract";
-import l1StandardBridge from "@/lib/contracts/l1-standard-bridge/contract";
+// import l1CrossDomainMessenger from "@/lib/contracts/l1-cross-domain-messenger/contract";
+// import l1StandardBridge from "@/lib/contracts/l1-standard-bridge/contract";
 
 const toPrismaBlock = (
   {
@@ -581,16 +581,14 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
   const [
     { timestamp },
     transactionDepositedLogs,
-    sentMessageLogs,
-    ethBridgeInitiatedLogs,
+    /*sentMessageLogs,
+    ethBridgeInitiatedLogs,*/
   ] = await Promise.all([
     l1PublicClient.getBlock({ blockNumber }),
     optimismPortal.getEvents.TransactionDeposited(undefined, {
       fromBlock: blockNumber,
       toBlock: blockNumber,
     }),
-    [],
-    [],
     /*l1CrossDomainMessenger.getEvents.SentMessage(undefined, {
       fromBlock: blockNumber,
       toBlock: blockNumber,
