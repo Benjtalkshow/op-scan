@@ -213,7 +213,7 @@ export const compilerTypeKeys = Object.keys(compilerTypes) as CompilerType[];
 
 export const solidityCompilerVersionKeys = [
   "0.8.29+commit.ab55807c",
-  "0.8.28+commit.7893614a",
+  /*"0.8.28+commit.7893614a",
   "0.8.27+commit.40a35a09",
   "0.8.26+commit.8a97fa7a",
   "0.8.25+commit.b61c2a91",
@@ -241,7 +241,7 @@ export const solidityCompilerVersionKeys = [
   "0.8.3+commit.8d00100c",
   "0.8.2+commit.661d1103",
   "0.8.1+commit.df193b15",
-  "0.8.0+commit.c7dfd78e",
+  "0.8.0+commit.c7dfd78e",*/
 ] as const;
 
 export type SolidityCompilerVersion =
