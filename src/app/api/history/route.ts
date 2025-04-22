@@ -76,7 +76,10 @@ export const GET = async (request: NextRequest) => {
       transactionsHistory.map((transactionsHistoryItem) =>
         prisma.transactionsHistory.upsert({
           where: {
-            date_chainId: { date: transactionsHistoryItem.date, chainId: 1 },
+            date_chainId: {
+              date: transactionsHistoryItem.date,
+              chainId: l2Chain.id,
+            },
           },
           create: { ...transactionsHistoryItem, chainId: l2Chain.id },
           update: { ...transactionsHistoryItem, chainId: l2Chain.id },
