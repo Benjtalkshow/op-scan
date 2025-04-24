@@ -1,4 +1,5 @@
 import { type NextRequest } from "next/server";
+import { uniq } from "lodash";
 import { prisma } from "@/lib/prisma";
 import {
   addDays,
@@ -47,6 +48,47 @@ const fetchTransactionsHistoryCount = async () => {
   }).map(Number);
 };
 
+const getActiveAddressesCount = (
+  transactions: { from: string; to: string | null }[],
+) =>
+  uniq(
+    transactions.reduce<string[]>(
+      (previousValue, currentValue) =>
+        currentValue.to
+          ? [...previousValue, currentValue.from, currentValue.to]
+          : [...previousValue, currentValue.from],
+      [],
+    ),
+  ).length;
+
+const fetchActiveAddressesCount = async () => {
+  const results = await Promise.all(
+    getDates().map((date) =>
+      prisma.transaction.findMany({
+        where: {
+          chainId: l2Chain.id,
+          timestamp: {
+            gte: getUnixTime(date),
+            lt: getUnixTime(addDays(date, 1)),
+          },
+        },
+        select: { from: true, to: true },
+        distinct: ["from", "to"],
+      }),
+    ),
+  );
+  return results.map(getActiveAddressesCount);
+};
+
+const fetchActiveAddressesTotalCount = async () => {
+  const transactions = await prisma.transaction.findMany({
+    where: { chainId: l2Chain.id },
+    select: { from: true, to: true },
+    distinct: ["from", "to"],
+  });
+  return getActiveAddressesCount(transactions);
+};
+
 export const GET = async (request: NextRequest) => {
   const authHeader = request.headers.get("authorization");
   if (
@@ -58,18 +100,31 @@ export const GET = async (request: NextRequest) => {
     });
   }
   try {
-    const [prices, transactionsHistoryCount, transactionsCount] =
-      await Promise.all([
-        fetchPrices(),
-        fetchTransactionsHistoryCount(),
-        prisma.transaction.count({ where: { chainId: l2Chain.id } }),
-      ]);
+    const [
+      prices,
+      transactionsHistoryCount,
+      transactionsTotalCount,
+      activeAddressesCount,
+      activeAddressesTotalCount,
+    ] = await Promise.all([
+      fetchPrices(),
+      fetchTransactionsHistoryCount(),
+      prisma.transaction.count({ where: { chainId: l2Chain.id } }),
+      fetchActiveAddressesCount(),
+      fetchActiveAddressesTotalCount(),
+    ]);
     const transactionsHistory = [
-      { date: new UTCDate(0), price: 0, transactions: transactionsCount },
+      {
+        date: new UTCDate(0),
+        price: 0,
+        transactions: transactionsTotalCount,
+        activeAddresses: activeAddressesTotalCount,
+      },
       ...getDates().map((date, i) => ({
         date,
         price: prices[i]!.OP,
         transactions: transactionsHistoryCount[i]!,
+        activeAddresses: activeAddressesCount[i]!,
       })),
     ];
     await prisma.$transaction(

@@ -170,6 +170,14 @@ export type AccountWithTransactionAndToken = AccountWithTransaction & {
   erc1155Token: Erc1155Token | null;
 };
 
+export type TransactionsHistory = {
+  name: string;
+  date: string;
+  price: number;
+  transactions: number;
+  activeAddresses: number;
+};
+
 export type RollupConfig = {
   l2ChainId: number;
   l2ChainName: string;
@@ -218,7 +226,7 @@ export const solidityCompilerVersionKeys = [
   "0.8.26+commit.8a97fa7a",
   "0.8.25+commit.b61c2a91",
   "0.8.24+commit.e11b9ed9",
-  /*"0.8.23+commit.f704f362",
+  "0.8.23+commit.f704f362",
   "0.8.22+commit.4fc1097e",
   "0.8.21+commit.d9974bed",
   "0.8.20+commit.a1b79de6",
@@ -241,7 +249,7 @@ export const solidityCompilerVersionKeys = [
   "0.8.3+commit.8d00100c",
   "0.8.2+commit.661d1103",
   "0.8.1+commit.df193b15",
-  "0.8.0+commit.c7dfd78e",*/
+  "0.8.0+commit.c7dfd78e",
 ] as const;
 
 export type SolidityCompilerVersion =

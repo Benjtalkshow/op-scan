@@ -4,7 +4,7 @@ import solc_0_8_27 from "solc-0.8.27";
 import solc_0_8_26 from "solc-0.8.26";
 import solc_0_8_25 from "solc-0.8.25";
 import solc_0_8_24 from "solc-0.8.24";
-/*import solc_0_8_23 from "solc-0.8.23";
+import solc_0_8_23 from "solc-0.8.23";
 import solc_0_8_22 from "solc-0.8.22";
 import solc_0_8_21 from "solc-0.8.21";
 import solc_0_8_20 from "solc-0.8.20";
@@ -27,7 +27,7 @@ import solc_0_8_4 from "solc-0.8.4";
 import solc_0_8_3 from "solc-0.8.3";
 import solc_0_8_2 from "solc-0.8.2";
 import solc_0_8_1 from "solc-0.8.1";
-import solc_0_8_0 from "solc-0.8.0";*/
+import solc_0_8_0 from "solc-0.8.0";
 import {
   type ISolidityCompiler,
   type SolidityOutput,
@@ -49,7 +49,7 @@ const getSolidityCompiler = (
     "0.8.26+commit.8a97fa7a": solc_0_8_26,
     "0.8.25+commit.b61c2a91": solc_0_8_25,
     "0.8.24+commit.e11b9ed9": solc_0_8_24,
-    /*"0.8.23+commit.f704f362": solc_0_8_23,
+    "0.8.23+commit.f704f362": solc_0_8_23,
     "0.8.22+commit.4fc1097e": solc_0_8_22,
     "0.8.21+commit.d9974bed": solc_0_8_21,
     "0.8.20+commit.a1b79de6": solc_0_8_20,
@@ -72,7 +72,7 @@ const getSolidityCompiler = (
     "0.8.3+commit.8d00100c": solc_0_8_3,
     "0.8.2+commit.661d1103": solc_0_8_2,
     "0.8.1+commit.df193b15": solc_0_8_1,
-    "0.8.0+commit.c7dfd78e": solc_0_8_0,*/
+    "0.8.0+commit.c7dfd78e": solc_0_8_0,
   } as const;
   return solidityCompilerVersions[version];
 };

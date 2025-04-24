@@ -10,6 +10,7 @@ import {
 } from "@/lib/fetch-data";
 import { indexL1Block, indexL2Block } from "@/lib/indexer";
 import { l2Chain } from "@/lib/chains";
+import { transactionsHistoryCount } from "@/lib/constants";
 
 export const GET = async (request: NextRequest) => {
   const authHeader = request.headers.get("authorization");
@@ -66,13 +67,17 @@ export const GET = async (request: NextRequest) => {
         prisma.block.deleteMany({
           where: {
             chainId: l2Chain.id,
-            timestamp: { lt: getUnixTime(subDays(new UTCDate(), 1)) },
+            timestamp: {
+              lt: getUnixTime(subDays(new UTCDate(), transactionsHistoryCount)),
+            },
           },
         }),
         prisma.l1Block.deleteMany({
           where: {
             chainId: l2Chain.id,
-            timestamp: { lt: getUnixTime(subDays(new UTCDate(), 1)) },
+            timestamp: {
+              lt: getUnixTime(subDays(new UTCDate(), transactionsHistoryCount)),
+            },
           },
         }),
       ]);

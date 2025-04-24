@@ -5,10 +5,10 @@ generator client {
 }
 
 datasource db {
-  // provider = "sqlite"
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  // provider  = "postgresql"
+  url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model RollupConfig {
@@ -239,11 +239,12 @@ model Signature {
 }
 
 model TransactionsHistory {
-  date         DateTime
-  price        Float
-  transactions Int
-  chainId      Int
-  rollupConfig RollupConfig @relation(fields: [chainId], references: [l2ChainId], onDelete: Cascade)
+  date            DateTime
+  price           Float
+  transactions    Int
+  activeAddresses Int
+  chainId         Int
+  rollupConfig    RollupConfig @relation(fields: [chainId], references: [l2ChainId], onDelete: Cascade)
 
   @@id([date, chainId])
 }
