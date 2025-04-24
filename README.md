@@ -2,7 +2,7 @@
 
 SuperScan is a transaction explorer tailored specifically for the [OP Stack](https://docs.optimism.io/stack/getting-started) and the [Optimism Superchain](https://docs.optimism.io/superchain/superchain-explainer). It's focused on being lightweight so that anyone can run it locally next to a [Superchain simulator](https://github.com/ethereum-optimism/supersim) or any other compatible OP Stack based rollup.
 
-![screenshot](screenshot.png)
+![screenshot](screenshot.webp)
 
 ### 🚀 Quick Start using Supersim
 

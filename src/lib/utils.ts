@@ -13,13 +13,13 @@ import {
   parseEventLogs,
   erc20Abi,
   erc721Abi,
+  erc1155Abi,
   type Abi,
   type Hash,
 } from "viem";
 import { type AbiConstructor } from "abitype";
 import { capitalize } from "lodash";
 import { type Erc20Transfer, type NftTransfer } from "@/lib/types";
-import erc1155Abi from "@/lib/contracts/erc-1155/abi";
 import { l2PublicClient } from "@/lib/chains";
 import superchainTokenBridgeAbi from "@/lib/contracts/superchain-token-bridge/abi";
 

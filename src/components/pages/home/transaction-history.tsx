@@ -12,15 +12,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChartContainer } from "@/components/ui/chart";
 import { formatPrice, formatNumber } from "@/lib/utils";
 import { format, parseISO } from "date-fns";
+import { type TransactionsHistory } from "@/lib/types";
 
-type DataItem = {
-  name: string;
-  date: string;
-  price: number;
-  transactions: number;
-};
-
-const getTicks = (data: DataItem[]) => {
+const getTicks = (data: TransactionsHistory[]) => {
   const firstItem = data.at(0);
   const middleItem = data[Math.floor(data.length / 2)];
   const lastItem = data.at(-1);
@@ -55,7 +49,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   return null;
 };
 
-const TransactionHistory = ({ data }: { data: DataItem[] }) => (
+const TransactionHistory = ({ data }: { data: TransactionsHistory[] }) => (
   <Card>
     <CardHeader className="flex flex-row items-center justify-between pb-2">
       <CardTitle className="text-sm font-medium">

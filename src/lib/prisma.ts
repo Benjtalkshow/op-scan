@@ -33,10 +33,18 @@ import {
   type AccountWithTransactionAndToken,
   type AccountWithRollupConfig,
 } from "@/lib/types";
+import { neonConfig } from "@neondatabase/serverless";
+import { PrismaNeon } from "@prisma/adapter-neon";
+import ws from "ws";
+
+neonConfig.webSocketConstructor = ws;
+const adapter = process.env.DATABASE_URL.startsWith("postgres")
+  ? new PrismaNeon({ connectionString: process.env.DATABASE_URL })
+  : null;
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-export const prisma = globalForPrisma.prisma || new PrismaClient();
+export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
 

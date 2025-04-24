@@ -82,6 +82,15 @@ const fetchHomeData = async () => {
     transactionsEnqueued: transactionsEnqueued.map(
       fromPrismaTransactionEnqueued,
     ),
+    totalTransactionsHistory: transactionHistory
+      ? {
+          ...transactionHistory,
+          name: format(transactionHistory.date, "MMM d"),
+          date: formatISO(transactionHistory.date, {
+            representation: "date",
+          }),
+        }
+      : null,
     transactionsHistory: transactionsHistory
       .reverse()
       .map((transactionsHistoryItem) => ({

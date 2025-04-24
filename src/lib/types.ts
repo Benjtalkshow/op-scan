@@ -170,6 +170,14 @@ export type AccountWithTransactionAndToken = AccountWithTransaction & {
   erc1155Token: Erc1155Token | null;
 };
 
+export type TransactionsHistory = {
+  name: string;
+  date: string;
+  price: number;
+  transactions: number;
+  activeAddresses: number;
+};
+
 export type RollupConfig = {
   l2ChainId: number;
   l2ChainName: string;

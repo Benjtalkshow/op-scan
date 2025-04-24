@@ -67,7 +67,7 @@ const LatestTransactions = ({
     <CardHeader className="border-b">
       <CardTitle>Latest Transactions</CardTitle>
     </CardHeader>
-    <CardContent className="grid max-h-[557px] gap-6 divide-y overflow-x-hidden overflow-y-scroll">
+    <CardContent className="grid max-h-[509px] gap-6 divide-y overflow-x-hidden overflow-y-scroll">
       {transactions.map((transaction) => (
         <LatestTransaction key={transaction.hash} transaction={transaction} />
       ))}

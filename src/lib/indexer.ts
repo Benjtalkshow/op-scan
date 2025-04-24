@@ -1,4 +1,4 @@
-import { type Log, getAddress, type Address, type Hex, zeroHash } from "viem";
+import { type Log, getAddress, type Address, type Hex } from "viem";
 import {
   extractTransactionDepositedLogs,
   getL2TransactionHash,
@@ -39,7 +39,7 @@ import getErc20Contract from "@/lib/contracts/erc-20/contract";
 import getErc721Contract from "@/lib/contracts/erc-721/contract";
 import optimismPortal from "@/lib/contracts/optimism-portal2/contract";
 import l1CrossDomainMessenger from "@/lib/contracts/l1-cross-domain-messenger/contract";
-import l1StandardBridge from "@/lib/contracts/l1-standard-bridge/contract";
+// import l1StandardBridge from "@/lib/contracts/l1-standard-bridge/contract";
 
 const toPrismaBlock = (
   {
@@ -582,7 +582,7 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
     { timestamp },
     transactionDepositedLogs,
     sentMessageLogs,
-    ethBridgeInitiatedLogs,
+    // ethBridgeInitiatedLogs,
   ] = await Promise.all([
     l1PublicClient.getBlock({ blockNumber }),
     optimismPortal.getEvents.TransactionDeposited(undefined, {
@@ -593,16 +593,15 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
       fromBlock: blockNumber,
       toBlock: blockNumber,
     }),
-    l1StandardBridge.getEvents.ETHBridgeInitiated(undefined, {
+    /* l1StandardBridge.getEvents.ETHBridgeInitiated(undefined, {
       fromBlock: blockNumber,
       toBlock: blockNumber,
-    }),
+    }), */
   ]);
   const transactionsEnqueued = extractTransactionDepositedLogs({
     logs: transactionDepositedLogs,
   })
     .map((transactionDepositedLog, index) => {
-      console.log(transactionDepositedLog);
       const sentMessageLog = sentMessageLogs[index];
       const gasLimit =
         sentMessageLog?.args.gasLimit ??
@@ -618,7 +617,7 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
     })
     .filter((transactionEnqueued) => transactionEnqueued !== null);
   // TODO: bridgeETH deposits not fully supported
-  const bridgeTransactions = ethBridgeInitiatedLogs.map(
+  /*const bridgeTransactions = ethBridgeInitiatedLogs.map(
     (ethBridgeInitiatedLog) => {
       return {
         l1BlockNumber: ethBridgeInitiatedLog.blockNumber,
@@ -630,13 +629,13 @@ export const indexL1Block = async (blockNumber: bigint, chainId: number) => {
       };
     },
   );
-  transactionsEnqueued.push(...bridgeTransactions);
+  transactionsEnqueued.push(...bridgeTransactions); */
   try {
     await prisma.$transaction([
       prisma.l1Block.upsert({
         where: { number_chainId: { number: blockNumber, chainId } },
-        create: { number: blockNumber, chainId },
-        update: { number: blockNumber, chainId },
+        create: { number: blockNumber, timestamp, chainId },
+        update: { number: blockNumber, timestamp, chainId },
       }),
       ...transactionsEnqueued
         .map((transactionEnqueued) =>

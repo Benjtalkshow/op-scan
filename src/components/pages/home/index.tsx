@@ -5,7 +5,7 @@ import Search from "@/components/lib/search";
 import EthPrice from "@/components/pages/home/eth-price";
 import OpPrice from "@/components/pages/home/op-price";
 import LatestBlockAndTxs from "@/components/pages/home/latest-block-and-txs";
-import LatestL1TxBatch from "@/components/pages/home/latest-l1-tx-batch";
+import ActiveAddresses from "@/components/pages/home/active-addresses";
 import TransactionHistory from "@/components/pages/home/transaction-history";
 import LatestBlocks from "@/components/pages/home/latest-blocks";
 import LatestTransactions from "@/components/pages/home/latest-transactions";
@@ -21,11 +21,13 @@ const Home = async () => {
     transactionsCount,
     tps,
     transactionsEnqueued,
+    totalTransactionsHistory,
     transactionsHistory,
   } = await fetchHomeData();
   const [firstBlock] = blocks;
   const hasTransactionsHistory =
     transactionsHistory.length === transactionsHistoryCount + 1;
+  const todayTransactionsHistory = transactionsHistory.at(-1);
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-4 md:p-4">
       <h1 className="text-xl font-bold">{l2Chain.name} Explorer</h1>
@@ -46,7 +48,12 @@ const Home = async () => {
             transactionsCount={transactionsCount}
             tps={tps}
           />
-          <LatestL1TxBatch />
+          {totalTransactionsHistory && todayTransactionsHistory && (
+            <ActiveAddresses
+              todayTransactionsHistory={todayTransactionsHistory}
+              totalTransactionsHistory={totalTransactionsHistory}
+            />
+          )}
         </div>
         {hasTransactionsHistory && (
           <TransactionHistory data={transactionsHistory} />
