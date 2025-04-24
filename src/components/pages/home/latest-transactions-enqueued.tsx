@@ -72,7 +72,7 @@ const LatestTransactionsEnqueued = ({
     <CardHeader className="border-b">
       <CardTitle>Latest L1 → L2 Transactions</CardTitle>
     </CardHeader>
-    <CardContent className="grid max-h-[557px] gap-6 divide-y overflow-x-hidden overflow-y-scroll">
+    <CardContent className="grid max-h-[509px] gap-6 divide-y overflow-x-hidden overflow-y-scroll">
       {transactions.map((transaction) => (
         <LatestTransactionEnqueued
           key={transaction.l1TxHash}
